@@ -1,0 +1,13 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.DS_Store
+*.Rproj
+node_modules/
+config.yml
+rsconnect/
+inst/doc
+*deps.yaml
+*deps.json
+*params.json

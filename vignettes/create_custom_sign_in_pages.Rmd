@@ -1,0 +1,163 @@
+---
+title: "Fully Customize Sign In Pages"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{create_custom_sign_in_pages}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+`noClocksAuthR` comes with the following pre built sign in pages to help you quickly add custom sign in pages to your shiny app:
+
+```{r, eval = FALSE}
+sign_in_module()
+sign_in_module_2()
+```
+
+`sign_in_module()` is primarily designed to be used for just email/password sign in (i.e. it does not look great when you include
+social sign in providers like Google and Microsoft).  
+
+`sign_in_module_2()` is designed to look a little better with email/password and social sign in providers.  
+
+Use the `sign_in_ui_default()` function to style these modules with your brand's colors and logos.  Check out the docs for `?sign_in_ui_default` 
+
+If you require more customization than that offered by the the above functions, you can fully customize your sign in page with the following 2 functions:
+
+```{r, eval = FALSE}
+sign_in_js()
+sign_in_check_jwt()
+```
+
+Behind the scenes, the `sign_in_module()` and `sign_in_module_2()` use the `sign_in_js()` and `sign_in_check_jwt()` to build their UI and server functionality.  To fully customize your sign in pages, you can create your own shiny module that uses these functions. To create your own fully customized sign in module, include inputs with the following name-spaced ids:
+
+- "sign_in_email"
+- "sign_in_password"
+- "sign_in_submit"
+
+- "register_email"
+- "register_password"
+- "register_password_verify"
+- "register_submit"
+
+You can create `shiny::textInputs`, `shiny::passwordInput`s, and `shiny::actionButton`s with the above IDs, or you can use the `email_input` and `password_input` functions available with `noClocksAuthR`;  As long as the ID of the inputs match up with the above input IDs, then the JavaScript available with `sign_in_js()` and the server logic in `sign_in_check_jwt()` will be able to handle the sign in and registration.  See the example below:
+
+NOTE: when passing your custom module UI as the `sign_in_page_ui` argument to the `secure_ui()` function, you **must** use "sign_in" as the UI module's ID (as shown in the example below).
+
+```{r, eval = FALSE}
+library(shiny)
+library(noClocksAuthR)
+
+
+my_custom_sign_in_module_ui <- tagList(
+  shinyjs::useShinyjs(),
+  # your custom sign in inputs
+    
+  div(
+    id = "sign_in_page",
+    email_input(
+      "sign_in_email"
+    ),
+    password_input(
+      "sign_in_password"
+    ),
+    actionButton(
+      "sign_in_submit",
+      "Sign In"
+    ),
+    actionLink(
+      "go_to_register",
+      "Not a member? Register!"
+    )
+  ),
+    
+  # your custom registration inputs.  Your inputs
+  shinyjs::hidden(
+    div(
+      id = ns("register_page"),
+      password_input(
+        "register_password"
+      ),
+      password_input(
+        "register_password_verify"
+      ),
+      actionButton(
+        ns("register_submit"),
+        "Register"
+      ),
+      actionLink(
+        ns("go_to_sign_in"),
+        "Already a member? Sign in!"
+      )
+    )
+  ),
+    
+    
+  # make sure to call this function somewhere in your sign in page UI.  It loads
+  # the JavaScript used in the sign in and registration process.
+  sign_in_js()  
+)
+  
+}
+
+my_custom_sign_in_module <- function(input, output, session) {
+  # your custom sign in and registration server logic
+  # We provide an example showing the sign in & registration pages separately
+  
+  # show the registration inputs & button
+  observeEvent(input$go_to_register, {
+    shinyjs::hideElement("sign_in_page")
+    shinyjs::showElement("register_page")
+  })
+  
+  # show the sign in inputs & button
+  observeEvent(input$go_to_sign_in, {
+    shinyjs::hideElement("register_page")
+    shinyjs::showElement("sign_in_page")
+  })
+  
+  jwt <- reactive({
+    # optional: include additional authorization checks here   
+    input$check_jwt
+  })
+  
+  sign_in_check_jwt(jwt)
+}
+
+ui <- secure_ui(
+  ui = fluidPage(
+    h1("I am a Shiny app!")
+  ),
+  # you must pass "sign_in" sign in to your custom module `id` argument
+  # as done below:
+  sign_in_page_ui = my_custom_sign_in_module_ui
+)
+
+server <- secure_server(
+  server = function(input, output, session) {}, 
+  custom_sign_in_server = my_custom_sign_in_module
+)
+
+
+shinyApp(
+  ui,
+  server,
+  onStart = function() {
+    noclocksauthr_config(
+      api_key = "<your noClocksAuthR API key>",
+      app_name = "<your app name>"
+    )
+  }
+)
+
+```
+
+
+
+

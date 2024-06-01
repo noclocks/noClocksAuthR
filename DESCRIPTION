@@ -1,0 +1,55 @@
+Package: noClocksAuthR
+Type: Package
+Title: Authentication and Hosting for 'Shiny' Apps
+Version: 0.0.1
+Authors@R: c(
+  person("Patrick", "Howard", email = "patrick.howard@noclocks.dev", role = c("aut", "cre")),
+  person("Jimmy", "Briggs", email = "jimmy.briggs@noclocks.dev", role = c("aut")))
+Maintainer: Patrick Howard <patrick.howard@noclocks.dev>
+Description: Authentication, user administration, hosting, and additional infrastructure for 'shiny' apps. See
+  <https://noclocks.dev> for additional documentation and examples.
+License: MIT + file LICENSE
+URL: https://github.com/noclocks/noClocksAuthR,
+    https://noclocks.dev
+BugReports: https://github.com/noclocks/noClocksAuthR/issues
+Encoding: UTF-8
+Imports:
+    automagic,
+    digest,
+    dplyr,
+    desc,
+    DT,
+    htmltools,
+    httr,
+    jose,
+    jsonlite,
+    lubridate,
+    otp,
+    purrr,
+    rlang,
+    rmarkdown,
+    shiny,
+    shinycssloaders,
+    shinydashboard,
+    shinyFeedback,
+    shinyjs,
+    shinyWidgets,
+    stats,
+    stringr,
+    tibble,
+    tidyr,
+    utils,
+    uuid,
+    yaml
+Suggests:
+    base64enc,
+    config,
+    knitr,
+    plumber,
+    testthat (>= 3.0.0),
+    xfun
+VignetteBuilder: 
+    knitr
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+Config/testthat/edition: 3

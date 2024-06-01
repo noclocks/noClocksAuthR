@@ -1,0 +1,62 @@
+#' An html button to navigate the the "Admin Panel"
+#'
+#' The UI portion of the 'shiny' module for the button to navigate to the "Admin Panel".
+#' This is the button that, when clicked, navigates a 'noClocksAuthR' admin from your 'shiny' app to the 'noClocksAuthR'
+#' Admin Panel.  If your app is set up with the default 'noClocksAuthR' configuration, this button appears
+#' in the bottom right of your 'shiny' app.
+#'
+#' @param align The horizontal alignment of the button. Valid options are "right" (the default)
+#' or "left".
+#' @param vertical_align the vertical alignment of the button.  Valid options are "bottom" (the default)
+#' or "top"
+#'
+#' @importFrom shiny actionButton NS icon
+#'
+#' @return admin button UI
+#'
+#' @export
+#'
+admin_button_ui <- function(align = "right", vertical_align = "bottom") {
+  ns <- shiny::NS("noClocksAuthR")
+
+  shiny::actionButton(
+    ns("go_to_admin_panel"),
+    "Admin Panel",
+    icon = shiny::icon("cog"),
+    class = "btn-primary btn-lg",
+    style = paste0("position: fixed; ", vertical_align, ": 15px; ", align, ": 15px; color: #FFFFFF; z-index: 9999;")
+  )
+}
+
+#' Server logic for button to go to "Admin Panel"
+#'
+#' The server logic for the button to navigate 'noClocksAuthR' admins from your 'shiny'
+#' app to the 'noClocksAuthR' Admin Panel.
+#'
+#' @param input the Shiny server input
+#' @param output the Shiny server output
+#' @param session the Shiny server session
+#'
+#' @importFrom shiny observeEvent req updateQueryString
+#'
+#' @noRd
+#'
+admin_button <- function(input, output, session) {
+
+  shiny::observeEvent(input$go_to_admin_panel, {
+    # make sure session has loaded before navigating to admin panel.
+    # this fixes an error where session$userData is not set until after the
+    # the initial data loads on apps that load large amounts of data during
+    # the initial app load.
+    shiny::req(session$userData$user())
+
+    # remove admin=false from query
+    shiny::updateQueryString(
+      queryString = paste0("?page=admin"),
+      session = session,
+      mode = "push"
+    )
+
+    session$reload()
+  }, ignoreInit = TRUE)
+}
