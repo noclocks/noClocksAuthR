@@ -50,7 +50,7 @@ noclocksauthr_api_res <- function(resp) {
 #'
 #' @export
 #'
-printnoclocksauthr_api_res <- function(x, ...) {
+print.noclocksauthr_api_res <- function(x, ...) {
   cat("<noClocksAuthR ", x$response$url, ">\n", sep = "")
   print(x$content)
 

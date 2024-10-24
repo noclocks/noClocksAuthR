@@ -69,7 +69,7 @@ secure_static <- function(
   ui_out <- secure_ui(
     ui,
     custom_admin_button_ui = shiny::actionButton(
-      "noClocksAuthR-go_to_admin_panel",
+      "noclocksauthr-go_to_admin_panel",
       "Admin Panel",
       icon = shiny::icon("cog"),
       style = "position: fixed; bottom: 15px; right: 15px; color: #FFFFFF; z-index: 9999; background-color: #0000FF; padding: 15px;"

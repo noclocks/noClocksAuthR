@@ -398,7 +398,7 @@ user_access_module <- function(input, output, session) {
     )
 
     # to to the Shiny app
-    remove_query_string(mode = "push")
+    noClocksAuthR::remove_query_string()
 
     session$reload()
   }, ignoreInit = TRUE)
