@@ -8,7 +8,8 @@
 #'
 #'
 #' @importFrom shiny actionButton NS icon
-#' @importFrom shinydashboard dashboardHeader dashboardPage dashboardSidebar dashboardBody sidebarMenu menuItem tabItems
+#' @importFrom shinydashboard dashboardBody sidebarMenu menuItem tabItems
+#' @importFrom shinydashboardPlus dashboardHeader dashboardPage dashboardSidebar
 #' @importFrom htmltools HTML tags
 #' @importFrom shinyjs useShinyjs
 #' @importFrom shinyFeedback useShinyFeedback
@@ -23,13 +24,13 @@ admin_ui <- function(
 
   # don't show profile dropdown if in Admin mode.  User cannot log out of admin mode.
 
-  head <- shinydashboard::dashboardHeader(
+  head <- shinydashboardPlus::dashboardHeader(
     title = options$title,
     profile_module_ui("noclocksauthr__profile")
   )
 
 
-  sidebar <- shinydashboard::dashboardSidebar(
+  sidebar <- shinydashboardPlus::dashboardSidebar(
     shinydashboard::sidebarMenu(
       id = "sidebar_menu",
       shinydashboard::menuItem(
@@ -78,7 +79,7 @@ admin_ui <- function(
 
 
 
-  shinydashboard::dashboardPage(
+  shinydashboardPlus::dashboardPage(
     head,
     sidebar,
     body,
