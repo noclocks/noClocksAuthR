@@ -363,7 +363,7 @@ secure_rmd <- function(
   secure_ui_args <- list(
     ui = ui,
     custom_admin_button_ui = shiny::actionButton(
-      "noClocksAuthR-go_to_admin_panel",
+      "noclocksauthr-go_to_admin_panel",
       "Admin Panel",
       icon = shiny::icon("cog"),
       class = "btn-primary btn-lg",

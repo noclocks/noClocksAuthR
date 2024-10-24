@@ -119,7 +119,7 @@ admin_server <- function(input, output, session) {
     # browser()
 
     # Go to `Shiny` app
-    remove_query_string()
+    noClocksAuthR::remove_query_string()
 
     session$reload()
 

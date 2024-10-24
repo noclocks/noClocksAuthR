@@ -17,7 +17,7 @@
 #' @export
 #'
 admin_button_ui <- function(align = "right", vertical_align = "bottom") {
-  ns <- shiny::NS("noClocksAuthR")
+  ns <- shiny::NS("noclocksauthr")
 
   shiny::actionButton(
     ns("go_to_admin_panel"),
@@ -42,6 +42,7 @@ admin_button_ui <- function(align = "right", vertical_align = "bottom") {
 #' @noRd
 #'
 admin_button <- function(input, output, session) {
+  ns <- session$ns
 
   shiny::observeEvent(input$go_to_admin_panel, {
     # make sure session has loaded before navigating to admin panel.

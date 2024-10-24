@@ -188,7 +188,7 @@ secure_server <- function(
             # click the button to return to the admin panel.
             shiny::callModule(
               admin_button,
-              "noClocksAuthR"
+              "noclocksauthr"
             )
 
             # set the session to inactive when the session ends
